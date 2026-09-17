@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>梅花易数 · 小六壬 完整教程</title>
+<style>
+:root{--bg:#0a0a1a;--bg2:#12122a;--card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08);--gold:#d4a853;--gold2:#f0d48a;--purple:#8b5cf6;--text:#e0e0ec;--text2:rgba(255,255,255,0.6);--text3:rgba(255,255,255,0.35);--red:#ef4444;--green:#22c55e;--blue:#3b82f6;--orange:#f59e0b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;padding:20px;max-width:900px;margin:0 auto}
+h1{font-size:28px;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin:40px 0 8px}
+h2{font-size:22px;color:var(--gold);margin:48px 0 16px;padding-bottom:8px;border-bottom:1px solid rgba(212,168,83,0.2)}
+h3{font-size:17px;color:var(--gold2);margin:28px 0 12px}
+h4{font-size:15px;color:var(--purple);margin:20px 0 8px}
+p,li{font-size:14px;color:var(--text2);margin-bottom:8px}
+strong{color:var(--text);font-weight:600}
+.hl{color:var(--gold);font-weight:600}
+.subtitle{text-align:center;color:var(--text3);font-size:13px;margin-bottom:32px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin:16px 0}
+.card-title{font-size:15px;font-weight:600;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-title::before{content:'';width:3px;height:14px;background:var(--gold);border-radius:2px}
+
+/* 导航 */
+.nav{position:sticky;top:0;background:rgba(10,10,26,0.95);backdrop-filter:blur(12px);z-index:10;padding:12px 0;border-bottom:1px solid var(--border);margin:-20px -20px 20px;padding:12px 20px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.nav a{color:var(--text2);text-decoration:none;font-size:12px;padding:4px 12px;border-radius:6px;border:1px solid var(--border);transition:all .2s}
+.nav a:hover{color:var(--gold);border-color:var(--gold)}
+
+/* 五行表 */
+table{width:100%;border-collapse:collapse;margin:12px 0}
+th{background:rgba(212,168,83,0.1);color:var(--gold);font-size:13px;padding:10px 8px;text-align:center;border:1px solid var(--border)}
+td{padding:8px;text-align:center;font-size:13px;color:var(--text2);border:1px solid var(--border)}
+td:first-child{font-weight:600;color:var(--text)}
+tr:hover td{background:rgba(255,255,255,0.02)}
+
+/* 五行颜色 */
+.wx-jin{color:#c0c0c0}.wx-mu{color:#66bb6a}.wx-shui{color:#4fc3f7}.wx-huo{color:#ef5350}.wx-tu{color:#d4a056}
+
+/* 八卦卡片 */
+.bagua-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.bagua-card{text-align:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 8px}
+.bagua-sym{font-size:36px;margin-bottom:4px}
+.bagua-name{font-size:16px;font-weight:700;margin-bottom:4px}
+.bagua-info{font-size:11px;color:var(--text3);line-height:1.6}
+
+/* 64卦表 */
+.hex-table{overflow-x:auto;margin:16px 0}
+.hex-table table{min-width:700px}
+.hex-table th{font-size:12px;padding:8px 4px;min-width:80px}
+.hex-table td{font-size:12px;padding:6px 4px;min-width:80px}
+.hex-table .hex-name{font-weight:600;color:var(--gold2);cursor:help}
+.hex-table .gua-row-header{background:rgba(139,92,246,0.08);font-weight:600;color:var(--purple)}
+
+/* 计算步骤 */
+.step{display:flex;gap:12px;margin:12px 0;align-items:flex-start}
+.step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--gold));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff}
+.step-content{flex:1}
+.step-content p{margin:0}
+
+.formula{background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);border-radius:8px;padding:12px 16px;margin:8px 0;font-family:'SF Mono',monospace;font-size:13px;color:var(--purple);overflow-x:auto}
+
+.example{background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.12);border-radius:8px;padding:14px 16px;margin:12px 0}
+.example-title{font-size:13px;font-weight:600;color:var(--green);margin-bottom:8px}
+
+.arrow-diagram{display:flex;align-items:center;justify-content:center;gap:8px;margin:16px 0;flex-wrap:wrap;font-size:14px}
+.arrow-box{padding:8px 14px;border-radius:8px;text-align:center;border:1px solid var(--border);background:var(--card)}
+.arrow-between{color:var(--text3);font-size:18px}
+
+.cycle-diagram{text-align:center;margin:20px 0;padding:20px;background:var(--card);border-radius:14px;border:1px solid var(--border)}
+.cycle-diagram pre{font-size:14px;line-height:1.6;color:var(--text);display:inline-block;text-align:left}
+
+.tip{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:13px;color:var(--orange)}
+
+@media(max-width:600px){
+  .bagua-grid{grid-template-columns:repeat(2,1fr)}
+  .hex-table table{min-width:500px}
+  h1{font-size:22px}
+  h2{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <a href="#wuxing">五行关系</a>
+  <a href="#bagua">八卦基础</a>
+  <a href="#liushi">64卦全表</a>
+  <a href="#liuren">小六壬</a>
+  <a href="#meihua">梅花易数</a>
+  <a href="#tiyong">体用关系</a>
+</div>
+
+<!-- ============================================================ -->
+<!-- 五行关系 -->
+<!-- ============================================================ -->
+<h1>梅花易数 · 小六壬 完整教程</h1>
+<p class="subtitle">从五行基础到起卦断卦，一步步教你学会占卜</p>
+
+<h2 id="wuxing">一、五行基础</h2>
+
+<h3>1.1 五行属性</h3>
+<div class="card">
+<table>
+<tr><th>五行</th><th>颜色</th><th>方位</th><th>季节</th><th>数字</th><th>身体</th><th>性格</th></tr>
+<tr><td class="wx-jin">金</td><td>白、银、灰</td><td>西</td><td>秋</td><td>4、9</td><td>肺、大肠、骨骼</td><td>刚毅果断、重义气</td></tr>
+<tr><td class="wx-mu">木</td><td>绿、青、翠</td><td>东</td><td>春</td><td>3、8</td><td>肝、胆、筋脉</td><td>仁慈正直、有主见</td></tr>
+<tr><td class="wx-shui">水</td><td>黑、蓝、深</td><td>北</td><td>冬</td><td>1、6</td><td>肾、膀胱、耳</td><td>聪慧灵活、善变通</td></tr>
+<tr><td class="wx-huo">火</td><td>红、橙、紫</td><td>南</td><td>夏</td><td>2、7</td><td>心、小肠、血管</td><td>热情开朗、重礼节</td></tr>
+<tr><td class="wx-tu">土</td><td>黄、棕、咖</td><td>中</td><td>四季末</td><td>5、0</td><td>脾、胃、肌肉</td><td>忠厚踏实、重信用</td></tr>
+</table>
+</div>
+
+<h3>1.2 五行相生</h3>
+<p>相生 = 一方<strong>滋养、促进、帮助</strong>另一方。就像妈妈生孩子，妈妈付出，孩子受益。</p>
+
+<div class="cycle-diagram">
+<pre>
+        <span class="wx-mu">木</span> ──生──▶ <span class="wx-huo">火</span>
+       ▲                  │
+       │                  ▼
+      生                  生
+       │                  │
+    <span class="wx-shui">水</span> ◀──生── <span class="wx-tu">土</span> ◀──生── <span class="wx-jin">金</span>
+</pre>
+</div>
+
+<div class="card">
+<table>
+<tr><th>相生关系</th><th>原理</th><th>生活比喻</th></tr>
+<tr><td><span class="wx-mu">木</span> 生 <span class="wx-huo">火</span></td><td>木头燃烧生火</td><td>有才华（木）的人容易发光发热（火）</td></tr>
+<tr><td><span class="wx-huo">火</span> 生 <span class="wx-tu">土</span></td><td>火烧成灰变土</td><td>热情努力（火）最终沉淀为根基（土）</td></tr>
+<tr><td><span class="wx-tu">土</span> 生 <span class="wx-jin">金</span></td><td>土中蕴藏矿石（金）</td><td>踏实积累（土）才能产出成果（金）</td></tr>
+<tr><td><span class="wx-jin">金</span> 生 <span class="wx-shui">水</span></td><td>金属冷凝成水珠；金器可引水</td><td>规则制度（金）让事情顺畅流转（水）</td></tr>
+<tr><td><span class="wx-shui">水</span> 生 <span class="wx-mu">木</span></td><td>水灌溉树木生长</td><td>智慧灵活（水）帮助成长发展（木）</td></tr>
+</table>
+</div>
+
+<h3>1.3 五行相克</h3>
+<p>相克 = 一方<strong>压制、制约、克制</strong>另一方。就像天敌关系，被克的一方处于劣势。</p>
+
+<div class="cycle-diagram">
+<pre>
+        <span class="wx-mu">木</span> ──克──▶ <span class="wx-tu">土</span>
+       ▲                  │
+       │                  ▼
+      克                  克
+       │                  │
+    <span class="wx-jin">金</span> ◀──克── <span class="wx-huo">火</span> ◀──克──
+</pre>
+</div>
+
+<div class="card">
+<table>
+<tr><th>相克关系</th><th>原理</th><th>生活比喻</th></tr>
+<tr><td><span class="wx-mu">木</span> 克 <span class="wx-tu">土</span></td><td>树根破土而出</td><td>有主见的人（木）能打破固有格局（土）</td></tr>
+<tr><td><span class="wx-tu">土</span> 克 <span class="wx-shui">水</span></td><td>土筑堤坝挡水</td><td>踏实稳重（土）能控制情绪波动（水）</td></tr>
+<tr><td><span class="wx-shui">水</span> 克 <span class="wx-huo">火</span></td><td>水灭火</td><td>冷静理智（水）能浇灭冲动（火）</td></tr>
+<tr><td><span class="wx-huo">火</span> 克 <span class="wx-jin">金</span></td><td>烈火熔金</td><td>热情魄力（火）能打破条条框框（金）</td></tr>
+<tr><td><span class="wx-jin">金</span> 克 <span class="wx-mu">木</span></td><td>斧头砍树</td><td>严格纪律（金）能约束散漫（木）</td></tr>
+</table>
+</div>
+
+<h3>1.4 梅花易数中五行的用法</h3>
+<p>梅花易数的核心叫<strong>"体用关系"</strong>——把卦分成"体"和"用"两部分，看它们的五行是生还是克，来判断吉凶：</p>
+<div class="card">
+<table>
+<tr><th>体用关系</th><th>五行关系</th><th>含义</th><th>吉凶</th></tr>
+<tr><td>用生体</td><td>用卦五行 生 体卦五行</td><td>环境帮你，贵人相助，事顺</td><td style="color:var(--green)">大吉 ★★★★★</td></tr>
+<tr><td>比和</td><td>体用同属一个五行</td><td>势均力敌，平等合作</td><td style="color:var(--green)">吉 ★★★★</td></tr>
+<tr><td>体克用</td><td>体卦五行 克 用卦五行</td><td>你主动掌控，费力但可成</td><td style="color:var(--blue)">小吉 ★★★</td></tr>
+<tr><td>体生用</td><td>体卦五行 生 用卦五行</td><td>你在付出消耗，能量外泄</td><td style="color:var(--orange)">偏凶 ★★</td></tr>
+<tr><td>用克体</td><td>用卦五行 克 体卦五行</td><td>环境压制你，外力不可抗</td><td style="color:var(--red)">大凶 ★</td></tr>
+</table>
+</div>
+
+<div class="tip">💡 <strong>记忆口诀：</strong>"生我者大吉，我生者泄气；克我者大凶，我克者费力；同属为比和，平稳也算吉。"</div>
+
+<!-- ============================================================ -->
+<!-- 八卦基础 -->
+<!-- ============================================================ -->
+<h2 id="bagua">二、八卦基础</h2>
+
+<p>八卦是64卦的基本组成单元。每个卦由<strong>3条爻</strong>组成（阳爻"—"和阴爻"- -"），代表自然界的8种基本元素/现象。</p>
+
+<h3>2.1 八卦总览</h3>
+<div class="bagua-grid">
+  <div class="bagua-card">
+    <div class="bagua-sym">☰</div>
+    <div class="bagua-name">乾</div>
+    <div class="bagua-info">天 · <span class="wx-jin">金</span><br>刚健 · 马<br>三连（阳阳阳）</div>
+  </div>
+  <div class="bagua-card">
+    <div class="bagua-sym">☱</div>
+    <div class="bagua-name">兑</div>
+    <div class="bagua-info">泽 · <span class="wx-jin">金</span><br>喜悦 · 羊<br>上缺（阳阳阴）</div>
+  </div>
+  <div class="bagua-card">
+    <div class="bagua-sym">☲</div>
+    <div class="bagua-name">离</div>
+    <div class="bagua-info">火 · <span class="wx-huo">火</span><br>光明 · 雉<br>中虚（阳阴阳）</div>
+  </div>
+  <div class="bagua-card">
+    <div class="bagua-sym">☳</div>
+    <div class="bagua-name">震</div>
+    <div class="bagua-info">雷 · <span class="wx-mu">木</span><br>震动 · 龙<br>仰盂（阴阴阳）</div>
+  </div>
+  <div class="bagua-card">
+    <div class="bagua-sym">☴</div>
+    <div class="bagua-name">巽</div>
+    <div class="bagua-info">风 · <span class="wx-mu">木</span><br>渗透 · 鸡<br>下断（阳阳阴→错，阴阳阳）</div>
+  </div>
+  <div class="bagua-card">
+    <div class="bagua-sym">☵</div>
+    <div class="bagua-name">坎</div>
+    <div class="bagua-info">水 · <span class="wx-shui">水</span><br>险陷 · 豕<br>中满（阴阳阴）</div>
+  </div>
+  <div class="bagua-card">
+    <div class="bagua-sym">☶</div>
+    <div class="bagua-name">艮</div>
+    <div class="bagua-info">山 · <span class="wx-tu">土</span><br>静止 · 狗<br>覆碗（阳阴阴）</div>
+  </div>
+  <div class="bagua-card">
+    <div class="bagua-sym">☷</div>
+    <div class="bagua-name">坤</div>
+    <div class="bagua-info">地 · <span class="wx-tu">土</span><br>柔顺 · 牛<br>六断（阴阴阴）</div>
+  </div>
+</div>
+
+<h3>2.2 八卦口诀（朱熹·八卦取象歌）</h3>
+<div class="card">
+<p><strong>乾三连</strong>（☰ 三条阳爻连在一起）<br>
+<strong>坤六断</strong>（☷ 六段阴爻断开）<br>
+<strong>震仰盂</strong>（☳ 像朝上的碗，下面一条阳爻托底）<br>
+<strong>艮覆碗</strong>（☶ 像倒扣的碗，上面一条阳爻盖住）<br>
+<strong>离中虚</strong>（☲ 中间一条阴爻，中虚）<br>
+<strong>坎中满</strong>（☵ 中间一条阳爻，中实）<br>
+<strong>兑上缺</strong>（☱ 最上面一条阴爻，缺口朝上）<br>
+<strong>巽下断</strong>（☴ 最下面一条阴爻，底部断开）</p>
+</div>
+
+<h3>2.3 八卦序号（梅花易数用）</h3>
+<p>梅花易数中，八卦有固定的<strong>先天序号</strong>，用来把数字转换成卦：</p>
+<div class="card">
+<table>
+<tr><th>序号</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8（余数0）</th></tr>
+<tr><td>卦名</td><td>乾</td><td>兑</td><td>离</td><td>震</td><td>巽</td><td>坎</td><td>艮</td><td>坤</td></tr>
+<tr><td>符号</td><td>☰</td><td>☱</td><td>☲</td><td>☳</td><td>☴</td><td>☵</td><td>☶</td><td>☷</td></tr>
+<tr><td>五行</td><td>金</td><td>金</td><td>火</td><td>木</td><td>木</td><td>水</td><td>土</td><td>土</td></tr>
+<tr><td>自然</td><td>天</td><td>泽</td><td>火</td><td>雷</td><td>风</td><td>水</td><td>山</td><td>地</td></tr>
+</table>
+</div>
+<p>计算公式中 <code>mod 8</code> 得到的余数，就对应这个序号。<strong>余数0等同于8，取坤卦</strong>（也有流派取乾卦，这里用坤）。</p>
+
+<!-- ============================================================ -->
+<!-- 64卦全表 -->
+<!-- ============================================================ -->
+<h2 id="liushi">三、64卦全表</h2>
+
+<p>64卦 = 8个上卦 × 8个下卦。每一卦由<strong>上卦（外卦）</strong>和<strong>下卦（内卦）</strong>组合而成。读法："[上卦自然象][下卦自然象][卦名]"，比如"天泽履"就是上面是天（乾），下面是泽（兑）。</p>
+
+<div class="tip">💡 <strong>查表方法：</strong>左列找上卦，顶行找下卦，交叉处就是对应的卦。</div>
+
+<div class="hex-table">
+<table>
+<tr>
+  <th class="gua-row-header">上＼下</th>
+  <th>☰ 乾·天·金</th>
+  <th>☱ 兑·泽·金</th>
+  <th>☲ 离·火·火</th>
+  <th>☳ 震·雷·木</th>
+  <th>☴ 巽·风·木</th>
+  <th>☵ 坎·水·水</th>
+  <th>☶ 艮·山·土</th>
+  <th>☷ 坤·地·土</th>
+</tr>
+<!-- 上卦=乾 -->
+<tr>
+  <td class="gua-row-header">☰ 乾·天</td>
+  <td class="hex-name" title="刚健中正，自强不息">乾为天</td>
+  <td class="hex-name" title="小心行事，循规蹈矩">天泽履</td>
+  <td class="hex-name" title="志同道合，团结协力">天火同人</td>
+  <td class="hex-name" title="顺其自然，勿强求">天雷无妄</td>
+  <td class="hex-name" title="意外邂逅，防小人">天风姤</td>
+  <td class="hex-name" title="争执之象，宜退让">天水讼</td>
+  <td class="hex-name" title="退避隐忍，保存实力">天山遁</td>
+  <td class="hex-name" title="闭塞不通，需等待">天地否</td>
+</tr>
+<!-- 上卦=兑 -->
+<tr>
+  <td class="gua-row-header">☱ 兑·泽</td>
+  <td class="hex-name" title="果断决断，除旧布新">泽天夬</td>
+  <td class="hex-name" title="喜悦和谐，口舌伶俐">兑为泽</td>
+  <td class="hex-name" title="变革更新，破旧立新">泽火革</td>
+  <td class="hex-name" title="顺势而为，随机应变">泽雷随</td>
+  <td class="hex-name" title="过犹不及，注意分寸">泽风大过</td>
+  <td class="hex-name" title="困境重重，守正待时">泽水困</td>
+  <td class="hex-name" title="感应相通，利于合作">泽山咸</td>
+  <td class="hex-name" title="聚集汇合，利见贵人">泽地萃</td>
+</tr>
+<!-- 上卦=离 -->
+<tr>
+  <td class="gua-row-header">☲ 离·火</td>
+  <td class="hex-name" title="大有收获，光明磊落">火天大有</td>
+  <td class="hex-name" title="背离分歧，求同存异">火泽睽</td>
+  <td class="hex-name" title="光明附丽，文明以止">离为火</td>
+  <td class="hex-name" title="明察秋毫，果断处理">火雷噬嗑</td>
+  <td class="hex-name" title="鼎新革故，稳固根基">火风鼎</td>
+  <td class="hex-name" title="尚未完成，继续努力">火水未济</td>
+  <td class="hex-name" title="旅行在外，小心谨慎">火山旅</td>
+  <td class="hex-name" title="光明上进，晋升有望">火地晋</td>
+</tr>
+<!-- 上卦=震 -->
+<tr>
+  <td class="gua-row-header">☳ 震·雷</td>
+  <td class="hex-name" title="壮大强盛，戒骄戒躁">雷天大壮</td>
+  <td class="hex-name" title="嫁娶之象，循序渐进">雷泽归妹</td>
+  <td class="hex-name" title="丰盛圆满，盛极思衰">雷火丰</td>
+  <td class="hex-name" title="震动惊惧，居安思危">震为雷</td>
+  <td class="hex-name" title="持之以恒，不忘初心">雷风恒</td>
+  <td class="hex-name" title="解除困难，拨云见日">雷水解</td>
+  <td class="hex-name" title="小有过越，谦卑行事">雷山小过</td>
+  <td class="hex-name" title="愉悦欢乐，顺势而动">雷地豫</td>
+</tr>
+<!-- 上卦=巽 -->
+<tr>
+  <td class="gua-row-header">☴ 巽·风</td>
+  <td class="hex-name" title="小有积蓄，耐心等待">风天小畜</td>
+  <td class="hex-name" title="诚信中正，内外一致">风泽中孚</td>
+  <td class="hex-name" title="治家之道，各安其位">风火家人</td>
+  <td class="hex-name" title="增益之象，利有攸往">风雷益</td>
+  <td class="hex-name" title="顺从渗透，柔以克刚">巽为风</td>
+  <td class="hex-name" title="涣散离散，需重新聚合">风水涣</td>
+  <td class="hex-name" title="循序渐进，水到渠成">风山渐</td>
+  <td class="hex-name" title="观察审视，以德服人">风地观</td>
+</tr>
+<!-- 上卦=坎 -->
+<tr>
+  <td class="gua-row-header">☵ 坎·水</td>
+  <td class="hex-name" title="等待时机，蓄势待发">水天需</td>
+  <td class="hex-name" title="节制有度，量入为出">水泽节</td>
+  <td class="hex-name" title="已经成功，善始善终">水火既济</td>
+  <td class="hex-name" title="初始艰难，终将通达">水雷屯</td>
+  <td class="hex-name" title="源源不断，取之有道">水风井</td>
+  <td class="hex-name" title="重重险阻，以信破险">坎为水</td>
+  <td class="hex-name" title="艰难前行，坚持不懈">水山蹇</td>
+  <td class="hex-name" title="亲近团结，辅佐相依">水地比</td>
+</tr>
+<!-- 上卦=艮 -->
+<tr>
+  <td class="gua-row-header">☶ 艮·山</td>
+  <td class="hex-name" title="大有积蓄，厚积薄发">山天大畜</td>
+  <td class="hex-name" title="减损以益，舍小求大">山泽损</td>
+  <td class="hex-name" title="文饰外表，注重内涵">山火贲</td>
+  <td class="hex-name" title="颐养正道，修身养性">山雷颐</td>
+  <td class="hex-name" title="整治积弊，拨乱反正">山风蛊</td>
+  <td class="hex-name" title="启蒙开悟，虚心求教">山水蒙</td>
+  <td class="hex-name" title="止而不动，适可而止">艮为山</td>
+  <td class="hex-name" title="剥落衰败，顺势而为">山地剥</td>
+</tr>
+<!-- 上卦=坤 -->
+<tr>
+  <td class="gua-row-header">☷ 坤·地</td>
+  <td class="hex-name" title="通泰吉祥，天地交合">地天泰</td>
+  <td class="hex-name" title="亲临治理，以德化人">地泽临</td>
+  <td class="hex-name" title="韬光养晦，隐忍待机">地火明夷</td>
+  <td class="hex-name" title="一阳复始，否极泰来">地雷复</td>
+  <td class="hex-name" title="上升进取，步步高升">地风升</td>
+  <td class="hex-name" title="统帅三军，纪律严明">地水师</td>
+  <td class="hex-name" title="谦虚谨慎，德高望重">地山谦</td>
+  <td class="hex-name" title="厚德载物，顺承天道">坤为地</td>
+</tr>
+</table>
+</div>
+
+<h3>3.1 64卦详解</h3>
+<p>按卦名字母顺序排列，每卦含<strong>上下卦组成、五行属性、核心含义、断卦要点</strong>。</p>
+
+<div class="card">
+<table>
+<tr><th style="width:100px">卦名</th><th>组成</th><th>五行</th><th style="width:60%">含义与解读</th></tr>
+<tr><td>乾为天</td><td>乾上乾下</td><td>金+金</td><td><strong>刚健中正，自强不息。</strong>六爻皆阳，至刚至强。做事有魄力，但要注意"亢龙有悔"——太过刚强容易折断。比和之卦，平稳。</td></tr>
+<tr><td>坤为地</td><td>坤上坤下</td><td>土+土</td><td><strong>厚德载物，顺承天道。</strong>六爻皆阴，至柔至顺。适合守成、配合、辅助，不宜强出头。比和之卦。</td></tr>
+<tr><td>水雷屯</td><td>坎上震下</td><td>水+木</td><td><strong>初始艰难，终将通达。</strong>万物初生之象，开头很难但有希望。水生木（上生下），过程艰难但有贵人暗助。适合问创业初期、新开始的事。</td></tr>
+<tr><td>山水蒙</td><td>艮上坎下</td><td>土+水</td><td><strong>启蒙开悟，虚心求教。</strong>蒙昧未开之象，需要学习、请教。适合问学业、新领域探索。不宜盲目行动，先学再做。</td></tr>
+<tr><td>水天需</td><td>坎上乾下</td><td>水+金</td><td><strong>等待时机，蓄势待发。</strong>时机未到，不可急躁。金生水（下生上），你在积蓄力量。适合问"什么时候能动"——答案是"再等等"。</td></tr>
+<tr><td>天水讼</td><td>乾上坎下</td><td>金+水</td><td><strong>争执之象，宜退让。</strong>天往上水往下，背道而驰。容易有官司、纠纷、意见不合。宜调解，不宜硬碰。</td></tr>
+<tr><td>地水师</td><td>坤上坎下</td><td>土+水</td><td><strong>统帅三军，纪律严明。</strong>出师征伐之象，需要组织、纪律和领导力。适合问团队管理、竞争类的事。</td></tr>
+<tr><td>水地比</td><td>坎上坤下</td><td>水+土</td><td><strong>亲近团结，辅佐相依。</strong>水在地上，自然融合。利于合作、结盟、找帮手。感情卦中是好兆头。</td></tr>
+<tr><td>风天小畜</td><td>巽上乾下</td><td>木+金</td><td><strong>小有积蓄，耐心等待。</strong>力量不够，只能小规模积累。金克木（下克上），内部有制约。不宜大动作。</td></tr>
+<tr><td>天泽履</td><td>乾上兑下</td><td>金+金</td><td><strong>小心行事，循规蹈矩。</strong>如踩虎尾，需要谨慎。按规矩办事，不要越界。适合问规矩、流程类的事。</td></tr>
+<tr><td>地天泰</td><td>坤上乾下</td><td>土+金</td><td><strong>通泰吉祥，天地交合。</strong>天气下降地气上升，阴阳交融。大吉之卦！万事亨通。土生金（上生下），用生体。</td></tr>
+<tr><td>天地否</td><td>乾上坤下</td><td>金+土</td><td><strong>闭塞不通，需等待。</strong>与泰相反，天气上升地气下降，彼此背离。事情卡住了，不通。</td></tr>
+<tr><td>天火同人</td><td>乾上离下</td><td>金+火</td><td><strong>志同道合，团结协力。</strong>大家目标一致，共同努力。火克金（下克上），有内部摩擦但方向对。</td></tr>
+<tr><td>火天大有</td><td>离上乾下</td><td>火+金</td><td><strong>大有收获，光明磊落。</strong>太阳高悬，万物可见。大丰收之象。做事光明正大就好。</td></tr>
+<tr><td>地山谦</td><td>坤上艮下</td><td>土+土</td><td><strong>谦虚谨慎，德高望重。</strong>易经中唯一的"六爻皆吉"之卦。越谦虚越好运。比和卦。</td></tr>
+<tr><td>雷地豫</td><td>震上坤下</td><td>木+土</td><td><strong>愉悦欢乐，顺势而动。</strong>春雷响于地上，万物欣悦。适合行动，但别乐过头。木克土（上克下），主动出击。</td></tr>
+<tr><td>泽雷随</td><td>兑上震下</td><td>金+木</td><td><strong>顺势而为，随机应变。</strong>跟着大势走，不要逆流。金克木（上克下），虽有制约但总体顺势。</td></tr>
+<tr><td>山风蛊</td><td>艮上巽下</td><td>土+木</td><td><strong>整治积弊，拨乱反正。</strong>器皿久不用生虫，需要清理整顿。适合问"需要改革/修复"的事。</td></tr>
+<tr><td>地泽临</td><td>坤上兑下</td><td>土+金</td><td><strong>亲临治理，以德化人。</strong>居高临下，亲力亲为。土生金（上生下），付出但有成效。</td></tr>
+<tr><td>风地观</td><td>巽上坤下</td><td>木+土</td><td><strong>观察审视，以德服人。</strong>风行地上，观察民情。适合"看"不适合"做"，先观察再行动。</td></tr>
+<tr><td>火雷噬嗑</td><td>离上震下</td><td>火+木</td><td><strong>明察秋毫，果断处理。</strong>咬合之象，需要果断处理障碍。木生火（下生上），有动力推进。</td></tr>
+<tr><td>山火贲</td><td>艮上离下</td><td>土+火</td><td><strong>文饰外表，注重内涵。</strong>装饰打扮之象，但要注意"华而不实"。火生土（下生上），有内在支撑。</td></tr>
+<tr><td>山地剥</td><td>艮上坤下</td><td>土+土</td><td><strong>剥落衰败，顺势而为。</strong>阳气剥落，只剩最后一爻。衰败之象，不要硬撑，该退就退。比和但整体偏弱。</td></tr>
+<tr><td>地雷复</td><td>坤上震下</td><td>土+木</td><td><strong>一阳复始，否极泰来。</strong>最底下生出一条阳爻，转机来了！低谷反弹、重新开始的好兆头。</td></tr>
+<tr><td>天雷无妄</td><td>乾上震下</td><td>金+木</td><td><strong>顺其自然，勿强求。</strong>意外之象，不要有非分之想。做好本分，别搞小动作。</td></tr>
+<tr><td>山天大畜</td><td>艮上乾下</td><td>土+金</td><td><strong>大有积蓄，厚积薄发。</strong>山中藏天，巨大的蓄积力量。准备充分了再出手。</td></tr>
+<tr><td>山雷颐</td><td>艮上震下</td><td>土+木</td><td><strong>颐养正道，修身养性。</strong>口腹之养与精神之养。注意饮食健康，也指"管住嘴"。</td></tr>
+<tr><td>泽风大过</td><td>兑上巽下</td><td>金+木</td><td><strong>过犹不及，注意分寸。</strong>力量过猛，像房梁弯曲。做事太过分了，需要收敛。</td></tr>
+<tr><td>坎为水</td><td>坎上坎下</td><td>水+水</td><td><strong>重重险阻，以信破险。</strong>双坎叠加，困难重重。但有诚信就能突破。比和卦但偏险。</td></tr>
+<tr><td>离为火</td><td>离上离下</td><td>火+火</td><td><strong>光明附丽，文明以止。</strong>双火光明，但火需要依附燃料。适合文化、教育类的事。比和卦。</td></tr>
+<tr><td>泽山咸</td><td>兑上艮下</td><td>金+土</td><td><strong>感应相通，利于合作。</strong>少男少女相感，是易经中的"恋爱卦"。土生金（下生上），互相吸引。感情卦大吉。</td></tr>
+<tr><td>雷风恒</td><td>震上巽下</td><td>木+木</td><td><strong>持之以恒，不忘初心。</strong>长男长女配合，恒久之道。做事要坚持，别半途而废。比和卦。</td></tr>
+<tr><td>天山遁</td><td>乾上巽下→错</td><td>金+土→错</td><td>修正：<strong>乾上艮下，金+土。</strong><strong>退避隐忍，保存实力。</strong>阳气消退，该退就退。不适合进攻/主动。</td></tr>
+<tr><td>雷天大壮</td><td>震上乾下</td><td>木+金</td><td><strong>壮大强盛，戒骄戒躁。</strong>四阳在下势不可挡，但"公羊撞篱笆"——太猛了会被卡住。</td></tr>
+<tr><td>火地晋</td><td>离上坤下</td><td>火+土</td><td><strong>光明上进，晋升有望。</strong>太阳从地面升起。升职、进步的好兆头。火生土（上生下），你在发光。</td></tr>
+<tr><td>地火明夷</td><td>坤上离下</td><td>土+火</td><td><strong>韬光养晦，隐忍待机。</strong>太阳没入地下，光明被遮蔽。怀才不遇、被打压。暂时低调。</td></tr>
+<tr><td>风火家人</td><td>巽上离下</td><td>木+火</td><td><strong>治家之道，各安其位。</strong>家庭和睦，各尽其责。适合问家事。木生火（上生下），家庭内部和谐。</td></tr>
+<tr><td>火泽睽</td><td>离上兑下</td><td>火+金</td><td><strong>背离分歧，求同存异。</strong>火往上泽往下，方向相反。意见不合但有共同目标。</td></tr>
+<tr><td>水山蹇</td><td>坎上艮下</td><td>水+土</td><td><strong>艰难前行，坚持不懈。</strong>前有险水后有大山，进退两难。但只要坚持，终能翻越。</td></tr>
+<tr><td>雷水解</td><td>震上坎下</td><td>木+水</td><td><strong>解除困难，拨云见日。</strong>春雷震动化解冰雪。困难正在消散，抓紧时机行动。</td></tr>
+<tr><td>山泽损</td><td>艮上兑下</td><td>土+金</td><td><strong>减损以益，舍小求大。</strong>牺牲眼前小利换取长远收益。吃亏是福。</td></tr>
+<tr><td>风雷益</td><td>巽上震下</td><td>木+木</td><td><strong>增益之象，利有攸往。</strong>风雷相助，力量增长。适合行动、投资、拓展。比和卦。</td></tr>
+<tr><td>泽天夬</td><td>兑上乾下</td><td>金+金</td><td><strong>果断决断，除旧布新。</strong>五阳决一阴，快刀斩乱麻。该断就断，不要犹豫。</td></tr>
+<tr><td>天风姤</td><td>乾上巽下</td><td>金+木</td><td><strong>意外邂逅，防小人。</strong>一阴从下方潜入，意外相遇。小心不请自来的人/事。</td></tr>
+<tr><td>泽地萃</td><td>兑上坤下</td><td>金+土</td><td><strong>聚集汇合，利见贵人。</strong>水聚于地上，人才汇聚。利于社交、团队活动。土生金（下生上）。</td></tr>
+<tr><td>地风升</td><td>坤上巽下</td><td>土+木</td><td><strong>上升进取，步步高升。</strong>木从地中往上长。稳步上升，不急不躁。升职、进步之象。</td></tr>
+<tr><td>泽水困</td><td>兑上坎下</td><td>金+水</td><td><strong>困境重重，守正待时。</strong>泽中无水，资源枯竭。处于困境，不要乱动，守住底线。</td></tr>
+<tr><td>水风井</td><td>坎上巽下</td><td>水+木</td><td><strong>源源不断，取之有道。</strong>井水养人，持续供给。稳定的资源/收入来源。</td></tr>
+<tr><td>泽火革</td><td>兑上离下</td><td>金+火</td><td><strong>变革更新，破旧立新。</strong>革命之卦，需要彻底改变旧模式。火克金（下克上），变革有力。</td></tr>
+<tr><td>火风鼎</td><td>离上巽下</td><td>火+木</td><td><strong>鼎新革故，稳固根基。</strong>革卦的姊妹卦——革是破，鼎是立。建立新秩序。</td></tr>
+<tr><td>震为雷</td><td>震上震下</td><td>木+木</td><td><strong>震动惊惧，居安思危。</strong>双雷叠加，惊吓不断但"震惊百里，不丧匕鬯"——有定力就能稳住。比和卦。</td></tr>
+<tr><td>艮为山</td><td>艮上艮下</td><td>土+土</td><td><strong>止而不动，适可而止。</strong>两山对峙，该停就停。不要行动，静观其变。比和卦。</td></tr>
+<tr><td>风山渐</td><td>巽上艮下</td><td>木+土</td><td><strong>循序渐进，水到渠成。</strong>鸿雁逐步高飞。一步一步来，别着急。婚姻卦中是好兆头。</td></tr>
+<tr><td>雷泽归妹</td><td>震上兑下</td><td>木+金</td><td><strong>嫁娶之象，循序渐进。</strong>少女出嫁，但"归妹以须"——时机不对就要等。感情卦中需谨慎。</td></tr>
+<tr><td>雷火丰</td><td>震上离下</td><td>木+火</td><td><strong>丰盛圆满，盛极思衰。</strong>日中则昃，最旺的时候要考虑下坡路。适合问"现在是不是最好的时候"——是，但要准备收。</td></tr>
+<tr><td>火山旅</td><td>离上艮下</td><td>火+土</td><td><strong>旅行在外，小心谨慎。</strong>客居他乡，不稳定。出门办事要注意安全和细节。</td></tr>
+<tr><td>巽为风</td><td>巽上巽下</td><td>木+木</td><td><strong>顺从渗透，柔以克刚。</strong>无孔不入的风。用柔性方式推进，不要硬来。比和卦。</td></tr>
+<tr><td>兑为泽</td><td>兑上兑下</td><td>金+金</td><td><strong>喜悦和谐，口舌伶俐。</strong>双泽相连，愉悦之象。但"口舌"也有是非，话多容易出错。比和卦。</td></tr>
+<tr><td>风水涣</td><td>巽上坎下</td><td>木+水</td><td><strong>涣散离散，需重新聚合。</strong>风吹水面，四散分离。团队/关系在瓦解，需要重新凝聚。</td></tr>
+<tr><td>水泽节</td><td>坎上兑下</td><td>水+金</td><td><strong>节制有度，量入为出。</strong>泽上有水，有限度。做事要有分寸，花钱要有预算。</td></tr>
+<tr><td>风泽中孚</td><td>巽上兑下</td><td>木+金</td><td><strong>诚信中正，内外一致。</strong>心中有诚信，连猪鱼都能感动。至诚之道。</td></tr>
+<tr><td>雷山小过</td><td>震上艮下</td><td>木+土</td><td><strong>小有过越，谦卑行事。</strong>小鸟飞过，不宜飞太高。做小事可以，大事不宜。木克土（上克下），力有不逮。</td></tr>
+<tr><td>水火既济</td><td>坎上离下</td><td>水+火</td><td><strong>已经成功，善始善终。</strong>水火交融，事情已成。但"初吉终乱"——成功了更要小心。</td></tr>
+<tr><td>火水未济</td><td>离上坎下</td><td>火+水</td><td><strong>尚未完成，继续努力。</strong>既济的反面，事情还没做完。还有空间，继续努力就好。</td></tr>
+</table>
+</div>
+
+<!-- ============================================================ -->
+<!-- 小六壬 -->
+<!-- ============================================================ -->
+<h2 id="liuren">四、小六壬计算方法</h2>
+
+<h3>4.1 六个位置</h3>
+<p>小六壬只有6个位置，循环使用。它们对应六个手指关节位置（大安=食指根、留连=食指中、速喜=食指尖、赤口=中指尖、小吉=无名指尖、空亡=无名中），也叫"掐指一算"。</p>
+
+<div class="card">
+<table>
+<tr><th>位置</th><th>五行</th><th>方位</th><th>吉凶</th><th>核心含义</th></tr>
+<tr><td><strong>大安</strong></td><td>木</td><td>东</td><td style="color:var(--green)">吉</td><td>安稳、平稳、不动。诸事吉利，但不宜大变动。</td></tr>
+<tr><td><strong>留连</strong></td><td>水</td><td>北</td><td style="color:var(--red)">凶</td><td>拖延、纠缠、迟滞。事情会拖很久，急不来。</td></tr>
+<tr><td><strong>速喜</strong></td><td>火</td><td>南</td><td style="color:var(--green)">吉</td><td>快速、喜讯、好消息。来得快，应验也快。</td></tr>
+<tr><td><strong>赤口</strong></td><td>金</td><td>西</td><td style="color:var(--red)">凶</td><td>口舌、争执、是非。容易吵架、起纠纷。</td></tr>
+<tr><td><strong>小吉</strong></td><td>木</td><td>东</td><td style="color:var(--green)">吉</td><td>小有吉利、和合。小确幸，不大但舒服。</td></tr>
+<tr><td><strong>空亡</strong></td><td>土</td><td>中</td><td style="color:var(--red)">凶</td><td>落空、白费、虚无。努力白费，竹篮打水。</td></tr>
+</table>
+</div>
+
+<h3>4.2 计算步骤（三步法）</h3>
+<p>小六壬的核心是<strong>"三传"</strong>——初传（起因）、中传（过程）、末传（结果）。每一步都是在上一步的基础上继续数。</p>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    <h4>初传 = 月上起月</h4>
+    <p>从"大安"开始，顺时针数到农历月份。</p>
+    <div class="formula">初传位置 = (月份 - 1) mod 6</div>
+    <p>结果：0=大安，1=留连，2=速喜，3=赤口，4=小吉，5=空亡</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <h4>中传 = 日上起日</h4>
+    <p>从<strong>初传的位置</strong>开始，继续顺时针数到农历日。</p>
+    <div class="formula">中传位置 = (初传 + 日 - 1) mod 6</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    <h4>末传 = 时上起时</h4>
+    <p>从<strong>中传的位置</strong>开始，继续顺时针数到时辰序号。</p>
+    <div class="formula">末传位置 = (中传 + 时辰 - 1) mod 6</div>
+    <p>时辰序号：子=1，丑=2，寅=3，卯=4，辰=5，巳=6，午=7，未=8，申=9，酉=10，戌=11，亥=12</p>
+  </div>
+</div>
+
+<div class="example">
+<div class="example-title">📝 实例演示</div>
+<p><strong>问题：</strong>今天去打麻将顺不顺利？<br>
+<strong>时间：</strong>农历七月初十，未时</p>
+
+<p><strong>第一步·初传：</strong>(7-1) mod 6 = 0 → <span class="hl">大安</span><br>
+<strong>第二步·中传：</strong>(0+10-1) mod 6 = 9 mod 6 = 3 → <span class="hl">赤口</span><br>
+<strong>第三步·末传：</strong>(3+8-1) mod 6 = 10 mod 6 = 4 → <span class="hl">小吉</span></p>
+
+<p><strong>三传：大安→赤口→小吉</strong><br>
+解读：开头平稳（大安），中途有口舌是非（赤口），最终小有收获（小吉）。2吉1凶，整体偏吉但不大。</p>
+</div>
+
+<div class="tip">💡 <strong>手指数法：</strong>大安（食指根）→留连（食指中节）→速喜（食指尖）→赤口（中指尖）→小吉（无名指尖）→空亡（无名中节）→再回到大安……循环往复。</div>
+
+<!-- ============================================================ -->
+<!-- 梅花易数 -->
+<!-- ============================================================ -->
+<h2 id="meihua">五、梅花易数计算方法</h2>
+
+<h3>5.1 时间起卦法</h3>
+<p>用当前的<strong>农历年月日时</strong>四个参数来起卦。</p>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    <h4>确定四个参数</h4>
+    <p><strong>年支序号：</strong>子=1，丑=2，寅=3，卯=4，辰=5，巳=6，午=7，未=8，申=9，酉=10，戌=11，亥=12<br>
+    公式：<code>((年份 - 4) mod 12 + 12) mod 12 + 1</code></p>
+    <p><strong>农历月：</strong>正月=1，二月=2……十二月=12（闰月按下个月算）</p>
+    <p><strong>农历日：</strong>初一=1，初二=2……三十=30</p>
+    <p><strong>时辰序号：</strong>子时=1，丑时=2……亥时=12</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <h4>计算上卦（外卦）</h4>
+    <div class="formula">sum1 = 年支 + 月 + 日<br>上卦序号 = sum1 mod 8（余数0取8）</div>
+    <p>余数对应八卦先天数：1=乾，2=兑，3=离，4=震，5=巽，6=坎，7=艮，8=坤（余数0等同于8）</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    <h4>计算下卦（内卦）</h4>
+    <div class="formula">sum2 = sum1 + 时辰<br>下卦序号 = sum2 mod 8（余数0取8）</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">4</div>
+  <div class="step-content">
+    <h4>确定动爻</h4>
+    <div class="formula">动爻 = sum2 mod 6（余数0取6）</div>
+    <p>结果为1-6，代表六爻中哪一爻在"动"（变化）。1=最下面一爻，6=最上面一爻。</p>
+  </div>
+</div>
+
+<div class="example">
+<div class="example-title">📝 时间起卦实例</div>
+<p><strong>时间：</strong>2026年（午年），农历七月初十，未时</p>
+<p>年支=午=7，月=7，日=10，时=未=8</p>
+<p>sum1 = 7+7+10 = <strong>24</strong><br>
+sum2 = 24+8 = <strong>32</strong></p>
+<p>上卦：24 mod 8 = 0 → 取8 → <strong>坤（地·土）</strong><br>
+下卦：32 mod 8 = 0 → 取8 → <strong>坤（地·土）</strong><br>
+动爻：32 mod 6 = 2 → <strong>第2爻动</strong></p>
+<p>本卦：<span class="hl">坤为地</span>。动爻在下卦（1-3），所以<strong>下卦=用，上卦=体</strong>。体用都是坤土→比和。</p>
+</div>
+
+<h3>5.2 报数起卦法</h3>
+<p>心中默想问题，随意报三个数。"数由心生"，不要刻意挑选。</p>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    <h4>取三个数</h4>
+    <p>随意报三个正整数（1-999均可），记为 n1、n2、n3。</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <h4>计算上下卦和动爻</h4>
+    <div class="formula">sum1 = n1 + n2（前两个数的和 → 上卦）<br>sum2 = sum1 + n3（三个数的总和 → 下卦和动爻）<br><br>上卦序号 = sum1 mod 8（余数0取8）<br>下卦序号 = sum2 mod 8（余数0取8）<br>动爻 = sum2 mod 6（余数0取6）</div>
+    <p>其余步骤与时间起卦完全相同。</p>
+  </div>
+</div>
+
+<h3>5.3 体用判定规则</h3>
+<p>梅花易数的核心断法：<strong>看动爻在哪个卦，那个卦就是"用"，另一个就是"体"。</strong></p>
+
+<div class="card">
+<table>
+<tr><th>动爻位置</th><th>体卦</th><th>用卦</th></tr>
+<tr><td>第1、2、3爻动（下卦范围内）</td><td><strong>上卦</strong> = 体</td><td><strong>下卦</strong> = 用</td></tr>
+<tr><td>第4、5、6爻动（上卦范围内）</td><td><strong>下卦</strong> = 体</td><td><strong>上卦</strong> = 用</td></tr>
+</table>
+<p style="margin-top:12px"><strong>简单记忆：</strong>"谁动谁是用，不动的是体。"动的那个卦代表事情/环境，不动的那个卦代表你自己。</p>
+</div>
+
+<h3>5.4 变卦计算</h3>
+<p>动爻变化后产生新的卦，叫<strong>"变卦"</strong>，代表事情的<strong>最终走向</strong>。</p>
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    <p>将动爻<strong>阴阳互换</strong>（阳变阴，阴变阳），其余五爻不变。</p>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <p>根据新的六条爻，重新拆分出上卦和下卦，查64卦表得到变卦名。</p>
+  </div>
+</div>
+
+<h3>5.5 互卦计算</h3>
+<p>互卦代表事情的<strong>内在过程</strong>（事情发展中间隐藏的状态）。</p>
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    <p>取原卦的<strong>第2、3、4爻</strong>组成互卦的<strong>下卦</strong></p>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <p>取原卦的<strong>第3、4、5爻</strong>组成互卦的<strong>上卦</strong></p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 体用关系 -->
+<!-- ============================================================ -->
+<h2 id="tiyong">六、体用关系详解与断卦口诀</h2>
+
+<h3>6.1 五种关系速查</h3>
+<div class="card">
+<table>
+<tr><th>关系</th><th>判定方法</th><th>吉凶</th><th>断语</th></tr>
+<tr><td><strong>用生体</strong></td><td>用卦五行生体卦五行<br>（如用=火，体=土，火生土）</td><td style="color:var(--green)">大吉</td><td>天助我也。贵人相助，环境对你有利，事半功倍。主动出击！</td></tr>
+<tr><td><strong>比和</strong></td><td>体用五行相同<br>（如体=土，用=土）</td><td style="color:var(--green)">吉</td><td>势均力敌。双方平等，适合合作。不亏不赚，稳中求进。</td></tr>
+<tr><td><strong>体克用</strong></td><td>体卦五行克用卦五行<br>（如体=金，用=木，金克木）</td><td style="color:var(--blue)">小吉</td><td>你有主动权。费力但能掌控局面，"我克者为财"——求财可得。</td></tr>
+<tr><td><strong>体生用</strong></td><td>体卦五行生用卦五行<br>（如体=土，用=金，土生金）</td><td style="color:var(--orange)">偏凶</td><td>你在消耗。精力、金钱往外流。不宜过度投入，该收就收。</td></tr>
+<tr><td><strong>用克体</strong></td><td>用卦五行克体卦五行<br>（如用=金，体=木，金克木）</td><td style="color:var(--red)">大凶</td><td>被压制。外部环境对你很不利，硬碰硬必输。退一步海阔天空。</td></tr>
+</table>
+</div>
+
+<h3>6.2 断卦完整流程</h3>
+<div class="card">
+<p><strong>第一步：起卦</strong> → 得到本卦（上卦+下卦）+ 动爻</p>
+<p><strong>第二步：定体用</strong> → 动爻所在的卦=用，另一个=体</p>
+<p><strong>第三步：查五行</strong> → 体卦的五行 vs 用卦的五行</p>
+<p><strong>第四步：判关系</strong> → 生/克/比和，确定吉凶等级</p>
+<p><strong>第五步：看变卦</strong> → 动爻变化后的新卦，看最终走向</p>
+<p><strong>第六步：看互卦</strong> → 中间过程的隐藏信息</p>
+<p><strong>第七步：综合断语</strong> → 本卦=现在，互卦=过程，变卦=结局</p>
+</div>
+
+<h3>6.3 断卦实例（完整演示）</h3>
+<div class="example">
+<div class="example-title">📝 问题：这笔投资能不能赚钱？</div>
+<p><strong>报数：</strong>3、7、5</p>
+<p>sum1 = 3+7 = 10，sum2 = 10+5 = 15</p>
+<p>上卦：10 mod 8 = 2 → <strong>兑（泽·金）</strong><br>
+下卦：15 mod 8 = 7 → <strong>艮（山·土）</strong><br>
+动爻：15 mod 6 = 3 → <strong>第3爻动</strong></p>
+
+<p>本卦：<span class="hl">泽山咸</span>（感应相通）</p>
+<p>动爻在第3爻（下卦范围），所以：上卦兑=用，下卦艮=体</p>
+<p>体=艮·土，用=兑·金 → <strong>土生金 → 体生用</strong> ⚠️</p>
+<p><strong>判断：</strong>你在往外输出能量。投资会有回报（咸卦本身是好卦），但你付出的比得到的多。过手财居多，留不住太多利润。</p>
+
+<p>变卦：第3爻由阳变阴 → 上卦不变=兑，下卦变为坤 → <span class="hl">泽地萃</span>（聚集汇合）</p>
+<p>变卦中：上兑金，下坤土 → 土生金 → 还是体生用。</p>
+<p><strong>最终走向：</strong>钱能聚过来（萃），但你要持续投入精力维护。不是躺赚的局。</p>
+
+<p><strong>综合建议：</strong>可以做，但别all in。小规模试水，见好就收。</p>
+</div>
+
+<div class="tip">💡 <strong>学习顺序建议：</strong>先背五行生克 → 再记八卦（符号+五行+口诀歌） → 学小六壬（最简单，5分钟上手） → 再学梅花易数（需要更多练习）。多算多练，算自己的事最灵。</div>
+
+<p style="text-align:center;color:var(--text3);margin-top:60px;padding:20px;border-top:1px solid var(--border)">
+  易数问卦 · 参考手册 · 心诚则灵<br>
+  <span style="font-size:11px">仅供学习传统文化参考，重大决策请结合实际情况理性判断</span>
+</p>
+
+</body>
+</html>
