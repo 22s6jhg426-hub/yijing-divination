@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>易数问卦</title>
+<style>
+:root{
+  --bg:#080816;--bg2:#10102a;--card:rgba(255,255,255,0.05);--border:rgba(255,255,255,0.08);
+  --gold:#d4a853;--gold2:#f0d48a;--purple:#8b5cf6;--purple2:#a78bfa;
+  --text:#e8e8f0;--text2:rgba(255,255,255,0.55);--text3:rgba(255,255,255,0.3);
+  --red:#ef4444;--green:#22c55e;--blue:#3b82f6;--orange:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.page{display:none;min-height:100vh;padding:20px;padding-bottom:40px}.page.active{display:block}
+
+/* ===== 首页 ===== */
+.home-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse at 50% 15%,rgba(139,92,246,0.12),transparent 55%),radial-gradient(ellipse at 70% 85%,rgba(212,168,83,0.06),transparent 35%),var(--bg)}
+.home-logo{text-align:center;margin-bottom:36px}
+.home-icon{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--gold));display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:32px;box-shadow:0 0 50px rgba(139,92,246,0.25)}
+.home-logo h1{font-size:26px;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.home-logo p{color:var(--text2);font-size:13px;margin-top:4px}
+.method-cards{width:100%;max-width:380px;display:flex;flex-direction:column;gap:14px}
+.method-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:16px}
+.method-card:active{transform:scale(0.98);border-color:var(--gold)}
+.method-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.method-info h3{font-size:16px;font-weight:600;margin-bottom:4px}
+.method-info p{font-size:12px;color:var(--text2);line-height:1.5}
+.home-tip{text-align:center;margin-top:28px;font-size:12px;color:var(--text3);max-width:300px;line-height:1.6}
+
+/* ===== 问卦页 ===== */
+.ask-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
+.ask-card{width:100%;max-width:400px;background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;padding:28px 24px}
+.ask-title{font-size:18px;font-weight:600;text-align:center;margin-bottom:6px;color:var(--gold2)}
+.ask-sub{font-size:13px;color:var(--text2);text-align:center;margin-bottom:24px;line-height:1.6}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:13px;color:var(--text2);margin-bottom:8px;font-weight:500}
+textarea{width:100%;height:80px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;padding:12px 16px;outline:none;resize:none;font-family:inherit;line-height:1.5}
+textarea:focus{border-color:var(--gold)}
+input,select{width:100%;height:46px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;padding:0 14px;outline:none;-webkit-appearance:none}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+input:focus,select:focus{border-color:var(--gold)}
+.num-inputs{display:flex;gap:10px}
+.num-inputs input{text-align:center;font-size:20px;font-weight:600;height:54px}
+.ask-btn{width:100%;height:50px;background:linear-gradient(135deg,var(--purple),var(--gold));border:none;border-radius:14px;color:#fff;font-size:16px;font-weight:600;cursor:pointer;letter-spacing:1px;margin-top:8px}
+.ask-btn:active{transform:scale(0.98)}
+.ask-btn:disabled{opacity:.5;cursor:not-allowed}
+.back-link{display:inline-flex;align-items:center;gap:4px;color:var(--text3);font-size:13px;margin-bottom:20px;cursor:pointer}
+
+/* ===== 加载 ===== */
+.loading-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
+.load-symbol{font-size:64px;animation:float 2s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.load-text{margin-top:20px;color:var(--gold);font-size:15px;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* ===== 结果页 ===== */
+.result-page{padding:16px;padding-bottom:60px}
+.result-header{text-align:center;padding:16px 0 20px}
+.result-header h2{font-size:20px;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.result-header .question{color:var(--text2);font-size:13px;margin-top:6px;font-style:italic}
+.section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px}
+.section-title{font-size:14px;font-weight:600;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section-title::before{content:'';width:3px;height:14px;background:var(--gold);border-radius:2px}
+
+/* 小六壬三传 */
+.chuan-row{display:flex;gap:10px;justify-content:center;margin-bottom:16px}
+.chuan-card{flex:1;text-align:center;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:16px 8px;transition:all .3s}
+.chuan-label{font-size:11px;color:var(--text3);margin-bottom:8px}
+.chuan-name{font-size:22px;font-weight:700;margin-bottom:4px}
+.chuan-wx{font-size:11px;color:var(--text2)}
+.chuan-good{border-color:rgba(34,197,94,0.4);background:rgba(34,197,94,0.06)}
+.chuan-bad{border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.05)}
+.chuan-neutral{border-color:rgba(59,130,246,0.3);background:rgba(59,130,246,0.05)}
+
+/* 卦象 */
+.hex-display{text-align:center;margin-bottom:16px}
+.hex-name{font-size:24px;font-weight:700;color:var(--gold2);margin-bottom:4px}
+.hex-desc{font-size:13px;color:var(--text2)}
+.hex-arrows{display:flex;justify-content:center;align-items:center;gap:12px;margin:12px 0}
+.hex-arrow-box{text-align:center;padding:10px 16px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;min-width:80px}
+.hex-arrow-label{font-size:10px;color:var(--text3);margin-bottom:4px}
+.hex-arrow-name{font-size:18px;font-weight:600}
+.hex-arrow-wx{font-size:11px;margin-top:2px}
+.hex-arrow-symbol{font-size:28px;line-height:1}
+.arrow-between{font-size:20px;color:var(--text3)}
+
+/* 爻图 */
+.yao-chart{display:flex;flex-direction:column;gap:4px;max-width:120px;margin:12px auto}
+.yao-line{display:flex;justify-content:center;gap:8px}
+.yao-seg{width:40px;height:6px;border-radius:3px;background:var(--gold)}
+.yao-broken .yao-seg{width:16px}
+.yao-changing{background:var(--red) !important}
+.yao-label{font-size:9px;color:var(--text3);text-align:center;margin-top:2px}
+
+/* 解读 */
+.interp{font-size:14px;line-height:1.85;color:var(--text2)}
+.interp strong{color:var(--text);font-weight:600}
+.interp .hl{color:var(--gold);font-weight:600}
+.interp .tag{display:inline-block;padding:2px 8px;border-radius:5px;font-size:12px;margin:2px}
+.tag-good{background:rgba(34,197,94,0.12);color:var(--green)}
+.tag-bad{background:rgba(239,68,68,0.12);color:var(--red)}
+.tag-info{background:rgba(59,130,246,0.12);color:var(--blue)}
+.tag-gold{background:rgba(212,168,83,0.12);color:var(--gold)}
+
+/* 时间信息 */
+.time-info{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;font-size:12px;color:var(--text3)}
+.time-info span{background:rgba(255,255,255,0.04);padding:4px 10px;border-radius:6px}
+
+/* 页脚 */
+.result-footer{text-align:center;padding:20px 0;color:var(--text3);font-size:12px}
+.again-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-size:13px;cursor:pointer;margin-top:8px}
+</style>
+</head>
+<body>
+
+<!-- ===== 首页 ===== -->
+<div class="page home-page active" id="homePage">
+  <div class="home-logo">
+    <div class="home-icon">☯</div>
+    <h1>易数问卦</h1>
+    <p>小六壬 · 梅花易数 · 心诚则灵</p>
+  </div>
+  <div class="method-cards">
+    <div class="method-card" onclick="startAsk('liuren')">
+      <div class="method-icon" style="background:rgba(34,197,94,0.12)">🎲</div>
+      <div class="method-info">
+        <h3>小六壬</h3>
+        <p>速断吉凶，三传知因果。适合问日常小事、出行、办事顺逆。</p>
+      </div>
+    </div>
+    <div class="method-card" onclick="startAsk('meihua')">
+      <div class="method-icon" style="background:rgba(139,92,246,0.12)">🌸</div>
+      <div class="method-info">
+        <h3>梅花易数</h3>
+        <p>以数起卦，体用断吉凶。适合问事业、感情、决策等大事。</p>
+      </div>
+    </div>
+    <div class="method-card" onclick="startAsk('meihua_num')">
+      <div class="method-icon" style="background:rgba(212,168,83,0.12)">🔢</div>
+      <div class="method-info">
+        <h3>梅花易数 · 报数起卦</h3>
+        <p>心中默想问题，随意报三个数字即可起卦。</p>
+      </div>
+    </div>
+  </div>
+  <div class="home-tip">心动则卦灵。请在心中默念所问之事，<br>待意念集中时再起卦，切勿反复占问同一事。</div>
+</div>
+
+<!-- ===== 问卦页 ===== -->
+<div class="page ask-page" id="askPage">
+  <div class="back-link" onclick="goHome()">← 返回</div>
+  <div class="ask-card">
+    <div class="ask-title" id="askTitle">小六壬问卦</div>
+    <div class="ask-sub" id="askSub">在心中默念你的问题，然后起卦</div>
+    <div class="form-group">
+      <label>你想问什么？</label>
+      <textarea id="question" placeholder="例如：这个月适合换工作吗？"></textarea>
+    </div>
+    <div class="form-group">
+      <label>起卦方式</label>
+      <select id="timeMode" onchange="toggleTimeMode()">
+        <option value="now">用当前时间自动起卦</option>
+        <option value="custom">手动指定农历时间</option>
+      </select>
+    </div>
+    <div id="customTimeArea" style="display:none">
+      <div class="form-group">
+        <label>农历月 / 日 / 时辰</label>
+        <div style="display:flex;gap:8px">
+          <input type="number" id="lm" placeholder="月" min="1" max="12" style="flex:1">
+          <input type="number" id="ld" placeholder="日" min="1" max="30" style="flex:1">
+          <select id="lh" style="flex:1.3">
+            <option value="1">子时</option><option value="2">丑时</option><option value="3">寅时</option>
+            <option value="4">卯时</option><option value="5">辰时</option><option value="6">巳时</option>
+            <option value="7">午时</option><option value="8">未时</option><option value="9">申时</option>
+            <option value="10">酉时</option><option value="11">戌时</option><option value="12">亥时</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div id="numArea" style="display:none">
+      <div class="form-group">
+        <label>随意报三个数（1-999）</label>
+        <div class="num-inputs">
+          <input type="number" id="num1" placeholder="数1" min="1" max="999">
+          <input type="number" id="num2" placeholder="数2" min="1" max="999">
+          <input type="number" id="num3" placeholder="数3" min="1" max="999">
+        </div>
+      </div>
+    </div>
+    <button class="ask-btn" onclick="doDivine()">🔮 起卦</button>
+  </div>
+</div>
+
+<!-- ===== 加载 ===== -->
+<div class="page" id="loadingPage">
+  <div class="loading-page">
+    <div class="load-symbol">☯</div>
+    <div class="load-text" id="loadText">正在起卦…</div>
+  </div>
+</div>
+
+<!-- ===== 结果页 ===== -->
+<div class="page result-page" id="resultPage">
+  <div class="result-header">
+    <h2 id="resultTitle">卦象解读</h2>
+    <div class="question" id="resultQuestion"></div>
+  </div>
+  <div class="time-info" id="timeInfo"></div>
+  <div id="resultContent"></div>
+  <div class="result-footer">
+    <div>易数问卦 · 仅供参考 · 心诚则灵</div>
+    <div class="again-btn" onclick="goHome()">🔄 再占一卦</div>
+  </div>
+</div>
+
+<script>
+// ==================== 核心数据 ====================
+const TG = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+const DZ = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+
+// 八卦
+const BAGUA = [
+  {name:'乾',sym:'☰',wx:'金',nature:'天',attr:'刚健',animal:'马'},
+  {name:'兑',sym:'☱',wx:'金',nature:'泽',attr:'喜悦',animal:'羊'},
+  {name:'离',sym:'☲',wx:'火',nature:'火',attr:'光明',animal:'雉'},
+  {name:'震',sym:'☳',wx:'木',nature:'雷',attr:'动',animal:'龙'},
+  {name:'巽',sym:'☴',wx:'木',nature:'风',attr:'入',animal:'鸡'},
+  {name:'坎',sym:'☵',wx:'水',nature:'水',attr:'险',animal:'豕'},
+  {name:'艮',sym:'☶',wx:'土',nature:'山',attr:'止',animal:'狗'},
+  {name:'坤',sym:'☷',wx:'土',nature:'地',attr:'顺',animal:'牛'}
+];
+
+// 六十四卦名
+const HEX_NAMES = {
+  '00':'乾为天','01':'天泽履','02':'天火同人','03':'天雷无妄','04':'天风姤','05':'天水讼','06':'天山遁','07':'天地否',
+  '10':'泽天夬','11':'兑为泽','12':'泽火革','13':'泽雷随','14':'泽风大过','15':'泽水困','16':'泽山咸','17':'泽地萃',
+  '20':'火天大有','21':'火泽睽','22':'离为火','23':'火雷噬嗑','24':'火风鼎','25':'火水未济','26':'火山旅','27':'火地晋',
+  '30':'雷天大壮','31':'雷泽归妹','32':'雷火丰','33':'震为雷','34':'雷风恒','35':'雷水解','36':'雷山小过','37':'雷地豫',
+  '40':'风天小畜','41':'风泽中孚','42':'风火家人','43':'风雷益','44':'巽为风','45':'风水涣','46':'风山渐','47':'风地观',
+  '50':'水天需','51':'水泽节','52':'水火既济','53':'水雷屯','54':'水风井','55':'坎为水','56':'水山蹇','57':'水地比',
+  '60':'山天大畜','61':'山泽损','62':'山火贲','63':'山雷颐','64':'山风蛊','65':'山水蒙','66':'艮为山','67':'山地剥',
+  '70':'地天泰','71':'地泽临','72':'地火明夷','73':'地雷复','74':'地风升','75':'地水师','76':'地山谦','77':'坤为地'
+};
+
+// 六十四卦简义
+const HEX_MEANING = {
+  '00':'刚健中正，自强不息','01':'小心行事，循规蹈矩','02':'志同道合，团结协力','03':'顺其自然，勿强求','04':'意外邂逅，防小人','05':'争执之象，宜退让','06':'退避隐忍，保存实力','07':'闭塞不通，需等待',
+  '10':'果断决断，除旧布新','11':'喜悦和谐，口舌伶俐','12':'变革更新，破旧立新','13':'顺势而为，随机应变','14':'过犹不及，注意分寸','15':'困境重重，守正待时','16':'感应相通，利于合作','17':'聚集汇合，利见贵人',
+  '20':'大有收获，光明磊落','21':'背离分歧，求同存异','22':'光明附丽，文明以止','23':'明察秋毫，果断处理','24':'鼎新革故，稳固根基','25':'尚未完成，继续努力','26':'旅行在外，小心谨慎','27':'光明上进，晋升有望',
+  '30':'壮大强盛，戒骄戒躁','31':'嫁娶之象，循序渐进','32':'丰盛圆满，盛极思衰','33':'震动惊惧，居安思危','34':'持之以恒，不忘初心','35':'解除困难，拨云见日','36':'小有过越，谦卑行事','37':'愉悦欢乐，顺势而动',
+  '40':'小有积蓄，耐心等待','41':'诚信中正，内外一致','42':'治家之道，各安其位','43':'增益之象，利有攸往','44':'顺从渗透，柔以克刚','45':'涣散离散，需重新聚合','46':'循序渐进，水到渠成','47':'观察审视，以德服人',
+  '50':'等待时机，蓄势待发','51':'节制有度，量入为出','52':'已经成功，善始善终','53':'初始艰难，终将通达','54':'源源不断，取之有道','55':'重重险阻，以信破险','56':'艰难前行，坚持不懈','57':'亲近团结，辅佐相依',
+  '60':'大有积蓄，厚积薄发','61':'减损以益，舍小求大','62':'文饰外表，注重内涵','63':'颐养正道，修身养性','64':'整治积弊，拨乱反正','65':'启蒙开悟，虚心求教','66':'止而不动，适可而止','67':'剥落衰败，顺势而为',
+  '70':'通泰吉祥，天地交合','71':'亲临治理，以德化人','72':'韬光养晦，隐忍待机','73':'一阳复始，否极泰来','74':'上升进取，步步高升','75':'统帅三军，纪律严明','76':'谦虚谨慎，德高望重','77':'厚德载物，顺承天道'
+};
+
+// 小六壬
+const LIUREN = [
+  {name:'大安',wx:'木',dir:'东',ji:true,desc:'安定平稳，诸事吉利。身不动时，属青龙。谋事有成，求财可得。'},
+  {name:'留连',wx:'水',dir:'北',ji:false,desc:'迟滞纠缠，事多拖延。卒未归时，属玄武。凡谋多暗，事多迟滞。'},
+  {name:'速喜',wx:'火',dir:'南',ji:true,desc:'喜讯即来，快速应验。人便至时，属朱雀。求财有喜，诸事遂心。'},
+  {name:'赤口',wx:'金',dir:'西',ji:false,desc:'口舌是非，争执冲突。官事凶时，属白虎。凡事不祥，防口舌灾。'},
+  {name:'小吉',wx:'木',dir:'东',ji:true,desc:'小有吉利，和合顺遂。人来喜时，属六合。谋事可成，求财小得。'},
+  {name:'空亡',wx:'土',dir:'中',ji:false,desc:'诸事落空，白费力气。音信稀时，属勾陈。谋事不成，求财无望。'}
+];
+
+// 小六壬分类解读
+const LIUREN_INTERP = {
+  '大安':{
+    '事业':'平稳发展，按部就班即可，不宜大变动。',
+    '财运':'正财稳定，偏财勿贪。守成为上。',
+    '感情':'关系稳定，适合长久发展。已有伴侣者和谐，单身者可静待缘分。',
+    '出行':'出行平安，宜往东方。',
+    '健康':'身体无恙，注意保养。',
+    '考试':'准备充分则能过，心态要稳。'
+  },
+  '留连':{
+    '事业':'事情拖延，短期内难有结果。需要耐心等待。',
+    '财运':'财来迟缓，不宜急功近利。可能有款项拖欠。',
+    '感情':'关系暧昧不明，纠缠不清。需要时间理清。',
+    '出行':'出行多阻碍，行程可能延误。',
+    '健康':'旧疾缠绵，恢复较慢。',
+    '考试':'准备不充分，可能发挥失常。'
+  },
+  '速喜':{
+    '事业':'好消息即将到来，事业有突破。',
+    '财运':'意外之财，来得快去得也快。及时把握。',
+    '感情':'桃花运旺，可能很快有好消息。',
+    '出行':'出行顺利，宜往南方。',
+    '健康':'身体好转，精神焕发。',
+    '考试':'发挥超常，有好结果。'
+  },
+  '赤口':{
+    '事业':'小心口舌纠纷，不宜与人争执。少说多做。',
+    '财运':'可能因争执破财，或有罚款、赔偿。',
+    '感情':'容易发生争吵，注意沟通方式。',
+    '出行':'出行多口舌是非，注意安全。',
+    '健康':'注意口腔、咽喉问题。',
+    '考试':'容易粗心失误，审题要仔细。'
+  },
+  '小吉':{
+    '事业':'小有收获，稳中有进。不宜贪大。',
+    '财运':'有小财入账，量不大但稳。',
+    '感情':'关系和睦，有小惊喜。',
+    '出行':'出行顺利，小有收获。',
+    '健康':'身体尚可，小病可愈。',
+    '考试':'成绩不错，达到预期。'
+  },
+  '空亡':{
+    '事业':'计划落空，努力白费。宜调整方向。',
+    '财运':'求财无望，不宜投资。',
+    '感情':'缘分未到，或关系走向终结。',
+    '出行':'不宜出行，去了也白去。',
+    '健康':'注意心理健康，可能有失落感。',
+    '考试':'发挥失常，结果不理想。'
+  }
+};
+
+// ==================== 五行生克 ====================
+const SHENG = {'木':'火','火':'土','土':'金','金':'水','水':'木'};
+const KE = {'木':'土','火':'金','土':'水','金':'木','水':'火'};
+const BEI_KE = {'木':'金','火':'水','土':'木','金':'火','水':'土'};
+const BEI_SHENG = {'木':'水','火':'木','土':'火','金':'土','水':'金'};
+
+// ==================== 页面控制 ====================
+let currentMethod = '';
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+function goHome(){showPage('homePage')}
+
+function startAsk(method){
+  currentMethod = method;
+  const titles = {liuren:'小六壬问卦',meihua:'梅花易数 · 时间起卦',meihua_num:'梅花易数 · 报数起卦'};
+  const subs = {
+    liuren:'速断吉凶。适合问日常小事：今天办事顺不顺？这个合作能不能成？',
+    meihua:'以当前时辰起卦。适合问大事：事业方向、感情走向、重大决策。',
+    meihua_num:'心中默想问题，随意报三个数。数由心生，卦由数起。'
+  };
+  document.getElementById('askTitle').textContent = titles[method];
+  document.getElementById('askSub').textContent = subs[method];
+  document.getElementById('timeMode').value = 'now';
+  document.getElementById('customTimeArea').style.display = 'none';
+  document.getElementById('numArea').style.display = method === 'meihua_num' ? 'block' : 'none';
+  document.getElementById('timeMode').parentElement.style.display = method === 'meihua_num' ? 'none' : 'block';
+  document.getElementById('question').value = '';
+  showPage('askPage');
+}
+
+function toggleTimeMode(){
+  const mode = document.getElementById('timeMode').value;
+  document.getElementById('customTimeArea').style.display = mode === 'custom' ? 'block' : 'none';
+}
+
+// ==================== 获取时间参数 ====================
+function getTimeParams(){
+  const mode = document.getElementById('timeMode').value;
+  if(mode === 'custom'){
+    return {
+      month: Math.max(1, Math.min(12, parseInt(document.getElementById('lm').value) || 1)),
+      day: Math.max(1, Math.min(30, parseInt(document.getElementById('ld').value) || 1)),
+      hour: Math.max(1, Math.min(12, parseInt(document.getElementById('lh').value) || 1))
+    };
+  }
+  // 自动取当前时间 → 近似转农历
+  const now = new Date();
+  const year = now.getFullYear();
+  const m = now.getMonth() + 1;
+  const d = now.getDate();
+  const h = now.getHours();
+
+  // 用春节日期表近似农历月日
+  const cny = [25,10,29,18,7,26,14,3,23,11,1,20,9,29,17,6,25,13,3,22,10,30,19,8,28,16,5,24,13,2]; // 2000-2029
+  const idx = year - 2000;
+  const cnyMonth = 1, cnyDay = (idx >= 0 && idx < 30) ? cny[idx] : 15;
+  const cnyDate = new Date(year, cnyMonth - 1, cnyDay);
+  const diffDays = Math.floor((now - cnyDate) / 86400000);
+  let lm = Math.floor(diffDays / 29.53) + 1;
+  if(lm < 1) lm = 12;
+  if(lm > 12) lm = ((lm - 1) % 12) + 1;
+  let ld = ((diffDays % 29.53) | 0) + 1;
+  if(ld < 1) ld = 1;
+  if(ld > 30) ld = 30;
+  // 时辰
+  let lh;
+  if(h >= 23 || h < 1) lh = 1;
+  else lh = Math.floor((h + 1) / 2) + 1;
+  if(lh > 12) lh = 12;
+  return { month: lm, day: ld, hour: lh };
+}
+
+// ==================== 小六壬计算 ====================
+function calcLiuren(month, day, hour){
+  // 月上起月
+  const chuan1 = (month - 1) % 6;
+  // 日上起日
+  const chuan2 = (chuan1 + day - 1) % 6;
+  // 时上起时
+  const chuan3 = (chuan2 + hour - 1) % 6;
+  return [chuan1, chuan2, chuan3];
+}
+
+// ==================== 梅花易数计算 ====================
+function calcMeihuaTime(month, day, hour){
+  // 获取年支序号
+  const now = new Date();
+  const year = now.getFullYear();
+  // 年支：(year - 4) % 12 → 子=0,丑=1,...
+  let yearZhi = ((year - 4) % 12 + 12) % 12 + 1; // 子=1,...亥=12
+
+  const sum1 = yearZhi + month + day;
+  const sum2 = sum1 + hour;
+
+  const upperNum = sum1 % 8 || 8;  // 1-8, 余数0取8(坤)
+  const lowerNum = sum2 % 8 || 8;
+  const movingLine = sum2 % 6 || 6; // 1-6, 余数0取6
+
+  // 先天数(1-8)转数组索引(0-7): 乾1→0, 兑2→1, ..., 坤8→7
+  const upperIdx = upperNum - 1;
+  const lowerIdx = lowerNum - 1;
+
+  return { upperIdx, lowerIdx, movingLine, yearZhi, sum1, sum2 };
+}
+
+function calcMeihuaNum(n1, n2, n3){
+  const sum1 = n1 + n2;
+  const sum2 = sum1 + n3;
+  const upperNum = sum1 % 8 || 8;
+  const lowerNum = sum2 % 8 || 8;
+  const movingLine = sum2 % 6 || 6;
+  const upperIdx = upperNum - 1;
+  const lowerIdx = lowerNum - 1;
+  return { upperIdx, lowerIdx, movingLine, sum1, sum2 };
+}
+
+// 体用判定
+function calcTiYong(upperIdx, lowerIdx, movingLine){
+  // 动爻在下卦(1-3)：下卦=用，上卦=体
+  // 动爻在上卦(4-6)：上卦=用，下卦=体
+  if(movingLine <= 3){
+    return { tiIdx: upperIdx, yongIdx: lowerIdx, tiPos:'上卦', yongPos:'下卦' };
+  } else {
+    return { tiIdx: lowerIdx, yongIdx: upperIdx, tiPos:'下卦', yongPos:'上卦' };
+  }
+}
+
+// 变卦
+function calcBianGua(upperIdx, lowerIdx, movingLine){
+  // 获取卦爻（从下到上，1-6）
+  const guaLines = getGuaLines(upperIdx, lowerIdx);
+  // 变爻
+  guaLines[movingLine - 1] = guaLines[movingLine - 1] === 1 ? 0 : 1;
+  // 重新计算上下卦
+  const newLower = linesToIdx(guaLines.slice(0, 3));
+  const newUpper = linesToIdx(guaLines.slice(3, 6));
+  return { upperIdx: newUpper, lowerIdx: newLower };
+}
+
+// 八卦对应的三爻（从下到上）
+const GUA_LINES = [
+  [1,1,1], // 乾 0
+  [0,1,1], // 兑 1
+  [1,0,1], // 离 2
+  [0,0,1], // 震 3
+  [1,1,0], // 巽 4
+  [0,1,0], // 坎 5
+  [1,0,0], // 艮 6
+  [0,0,0]  // 坤 7
+];
+
+function getGuaLines(upperIdx, lowerIdx){
+  return [...GUA_LINES[lowerIdx], ...GUA_LINES[upperIdx]];
+}
+
+function linesToIdx(lines){
+  for(let i = 0; i < 8; i++){
+    if(GUA_LINES[i][0]===lines[0] && GUA_LINES[i][1]===lines[1] && GUA_LINES[i][2]===lines[2]) return i;
+  }
+  return 0;
+}
+
+// 体用关系
+function getTiYongRelation(tiWx, yongWx){
+  if(tiWx === yongWx) return {rel:'比和',desc:'体用同属，平等互助',level:'吉',emoji:'🤝'};
+  if(SHENG[yongWx] === tiWx) return {rel:'用生体',desc:'环境生助你，事顺',level:'大吉',emoji:'🌟'};
+  if(SHENG[tiWx] === yongWx) return {rel:'体生用',desc:'你在付出消耗',level:'凶',emoji:'💧'};
+  if(KE[tiWx] === yongWx) return {rel:'体克用',desc:'你主动掌控，费力但可成',level:'小吉',emoji:'⚔️'};
+  if(KE[yongWx] === tiWx) return {rel:'用克体',desc:'环境压制你，事逆',level:'大凶',emoji:'🚫'};
+  return {rel:'未知',desc:'',level:'平',emoji:'❓'};
+}
+
+// ==================== 主流程 ====================
+function doDivine(){
+  const question = document.getElementById('question').value.trim();
+  if(!question){ alert('请先写下你想问的问题'); return; }
+
+  // 报数起卦：先验证输入，不合法就不切页面
+  if(currentMethod === 'meihua_num'){
+    const n1 = parseInt(document.getElementById('num1').value) || 0;
+    const n2 = parseInt(document.getElementById('num2').value) || 0;
+    const n3 = parseInt(document.getElementById('num3').value) || 0;
+    if(!n1 || !n2 || !n3){ alert('请输入三个数字'); return; }
+  }
+
+  showPage('loadingPage');
+  document.getElementById('loadText').textContent = currentMethod === 'liuren' ? '掐指推算中…' : '起卦推演中…';
+
+  setTimeout(() => {
+    try {
+      if(currentMethod === 'liuren'){
+        renderLiuren(question);
+      } else {
+        renderMeihua(question);
+      }
+      showPage('resultPage');
+    } catch(e) {
+      alert('起卦出错：' + e.message);
+      showPage('askPage');
+    }
+  }, 1800);
+}
+
+// ==================== 小六壬渲染 ====================
+function renderLiuren(question){
+  const tp = getTimeParams();
+  const chuan = calcLiuren(tp.month, tp.day, tp.hour);
+
+  document.getElementById('resultTitle').textContent = '小六壬 · 三传解读';
+  document.getElementById('resultQuestion').textContent = '「' + question + '」';
+
+  // 时间信息
+  document.getElementById('timeInfo').innerHTML = `
+    <span>农历 ${tp.month}月${tp.day}日</span>
+    <span>${DZ[tp.hour-1]}时</span>
+    <span>掐指起卦</span>
+  `;
+
+  // 三传卡片
+  let chuanHTML = '<div class="chuan-row">';
+  const labels = ['初传（起因）','中传（过程）','末传（结果）'];
+  chuan.forEach((idx, i) => {
+    const lr = LIUREN[idx];
+    const cls = lr.ji ? 'chuan-good' : 'chuan-bad';
+    chuanHTML += `
+      <div class="chuan-card ${cls}">
+        <div class="chuan-label">${labels[i]}</div>
+        <div class="chuan-name">${lr.name}</div>
+        <div class="chuan-wx">${lr.wx} · ${lr.dir}方</div>
+      </div>`;
+  });
+  chuanHTML += '</div>';
+
+  // 解读
+  let interpHTML = '';
+  chuan.forEach((idx, i) => {
+    const lr = LIUREN[idx];
+    interpHTML += `
+      <div class="section">
+        <div class="section-title">${labels[i]}：${lr.name}</div>
+        <div class="interp">
+          <strong>${lr.desc}</strong><br><br>
+          ${getLiurenDetail(lr.name, question)}
+        </div>
+      </div>`;
+  });
+
+  // 综合判断
+  const lastLr = LIUREN[chuan[2]];
+  const midLr = LIUREN[chuan[1]];
+  const firstLr = LIUREN[chuan[0]];
+  const goodCount = chuan.filter(i => LIUREN[i].ji).length;
+
+  interpHTML += `
+    <div class="section">
+      <div class="section-title">综合断语</div>
+      <div class="interp">
+        <span class="tag ${goodCount >= 2 ? 'tag-good' : goodCount <= 1 ? 'tag-bad' : 'tag-info'}">${goodCount >= 2 ? '整体吉利' : goodCount === 0 ? '整体不利' : '吉凶参半'}</span>
+        <br><br>
+        ${getLiurenSummary(firstLr.name, midLr.name, lastLr.name, question)}
+      </div>
+    </div>`;
+
+  document.getElementById('resultContent').innerHTML = chuanHTML + interpHTML;
+}
+
+function getLiurenDetail(name, question){
+  const q = question.toLowerCase();
+  let category = '事业';
+  if(q.includes('钱') || q.includes('财') || q.includes('投资') || q.includes('赚')) category = '财运';
+  else if(q.includes('感情') || q.includes('对象') || q.includes('男友') || q.includes('女友') || q.includes('结婚') || q.includes('喜欢')) category = '感情';
+  else if(q.includes('出门') || q.includes('出行') || q.includes('旅') || q.includes('去')) category = '出行';
+  else if(q.includes('病') || q.includes('身体') || q.includes('健康')) category = '健康';
+  else if(q.includes('考') || q.includes('试') || q.includes('学')) category = '考试';
+
+  return '<span class="tag tag-gold">' + category + '方面</span> ' + (LIUREN_INTERP[name]?.[category] || LIUREN_INTERP[name]?.['事业'] || '顺势而为，不宜强求。');
+}
+
+function getLiurenSummary(first, mid, last, question){
+  let text = '';
+  // 开头
+  if(first === '大安') text += '起因平稳，事情基础不错。';
+  else if(first === '速喜') text += '开局有喜，消息来得快。';
+  else if(first === '小吉') text += '开头有小的利好。';
+  else if(first === '留连') text += '起因纠缠，事情开头就不太顺。';
+  else if(first === '赤口') text += '起因有口舌争端。';
+  else if(first === '空亡') text += '起因虚无，事情从一开始就没有根基。';
+
+  // 过程
+  if(mid === '大安') text += '过程平稳。';
+  else if(mid === '速喜') text += '中途有好消息传来。';
+  else if(mid === '小吉') text += '中途小有顺利。';
+  else if(mid === '留连') text += '中途会拖延卡顿，急不来。';
+  else if(mid === '赤口') text += '中途容易起争执或遇到是非。';
+  else if(mid === '空亡') text += '中途可能白忙一场。';
+
+  // 结果
+  text += '<br><br><strong>最终结果：</strong>';
+  if(last === '大安') text += '<span class="hl">安稳落地，事情平稳收场，虽无大收获但也没有损失。</span>';
+  else if(last === '速喜') text += '<span class="hl">快速应验好消息！事情会有让你满意的结果。</span>';
+  else if(last === '小吉') text += '<span class="hl">小有吉利，事情虽不完美但有收获。</span>';
+  else if(last === '留连') text += '<span class="hl">事情会拖很久，短期内不会有明确结果。需要耐心等待。</span>';
+  else if(last === '赤口') text += '<span class="hl">注意口舌是非！结果可能因争执而变差。少说话，少争论。</span>';
+  else if(last === '空亡') text += '<span class="hl">事情大概率落空。建议调整方向或降低期望。</span>';
+
+  return text;
+}
+
+// ==================== 梅花易数渲染 ====================
+function renderMeihua(question){
+  const tp = getTimeParams();
+  let result;
+
+  if(currentMethod === 'meihua_num'){
+    const n1 = parseInt(document.getElementById('num1').value) || 1;
+    const n2 = parseInt(document.getElementById('num2').value) || 1;
+    const n3 = parseInt(document.getElementById('num3').value) || 1;
+    result = calcMeihuaNum(n1, n2, n3);
+    document.getElementById('timeInfo').innerHTML = `
+      <span>报数 ${n1} · ${n2} · ${n3}</span>
+      <span>数由心生</span>
+    `;
+  } else {
+    result = calcMeihuaTime(tp.month, tp.day, tp.hour);
+    document.getElementById('timeInfo').innerHTML = `
+      <span>农历 ${tp.month}月${tp.day}日</span>
+      <span>${DZ[tp.hour-1]}时</span>
+      <span>时间起卦</span>
+    `;
+  }
+
+  document.getElementById('resultTitle').textContent = '梅花易数 · 卦象解读';
+  document.getElementById('resultQuestion').textContent = '「' + question + '」';
+
+  const upper = BAGUA[result.upperIdx];
+  const lower = BAGUA[result.lowerIdx];
+  const tiYong = calcTiYong(result.upperIdx, result.lowerIdx, result.movingLine);
+  const tiGua = BAGUA[tiYong.tiIdx];
+  const yongGua = BAGUA[tiYong.yongIdx];
+  const relation = getTiYongRelation(tiGua.wx, yongGua.wx);
+
+  // 变卦
+  const bian = calcBianGua(result.upperIdx, result.lowerIdx, result.movingLine);
+  const bianUpper = BAGUA[bian.upperIdx];
+  const bianLower = BAGUA[bian.lowerIdx];
+
+  // 卦名
+  const mainKey = String(result.upperIdx) + String(result.lowerIdx);
+  const bianKey = String(bian.upperIdx) + String(bian.lowerIdx);
+  const mainName = HEX_NAMES[mainKey] || upper.name + '上' + lower.name + '下';
+  const bianName = HEX_NAMES[bianKey] || bianUpper.name + '上' + bianLower.name + '下';
+  const mainMeaning = HEX_MEANING[mainKey] || '顺势而为';
+  const bianMeaning = HEX_MEANING[bianKey] || '顺势而为';
+
+  // 互卦
+  const guaLines = getGuaLines(result.upperIdx, result.lowerIdx);
+  const huLower = linesToIdx([guaLines[1], guaLines[2], guaLines[3]]);
+  const huUpper = linesToIdx([guaLines[2], guaLines[3], guaLines[4]]);
+  const huKey = String(huUpper) + String(huLower);
+  const huName = HEX_NAMES[huKey] || BAGUA[huUpper].name + '上' + BAGUA[huLower].name + '下';
+  const huMeaning = HEX_MEANING[huKey] || '';
+
+  // 爻图
+  let yaoHTML = '<div class="yao-chart">';
+  for(let i = 5; i >= 0; i--){
+    const line = guaLines[i];
+    const isChanging = (i + 1) === result.movingLine;
+    const yaoNum = ['初','二','三','四','五','上'][i];
+    if(line === 1){
+      yaoHTML += `<div class="yao-line"><div class="yao-seg${isChanging?' yao-changing':''}"></div></div>`;
+    } else {
+      yaoHTML += `<div class="yao-line yao-broken"><div class="yao-seg${isChanging?' yao-changing':''}"></div><div class="yao-seg${isChanging?' yao-changing':''}"></div></div>`;
+    }
+    if(i === 2) yaoHTML += '<div style="height:4px"></div>'; // 上下卦分隔
+  }
+  yaoHTML += '</div>';
+
+  // 构建HTML
+  let html = `
+    <div class="section">
+      <div class="section-title">卦象</div>
+      <div class="hex-display">
+        <div class="hex-name">${mainName}</div>
+        <div class="hex-desc">${mainMeaning}</div>
+      </div>
+      ${yaoHTML}
+      <div style="text-align:center;font-size:11px;color:var(--text3);margin-top:4px">
+        第${result.movingLine}爻动${result.movingLine <= 3 ? '（下卦动）' : '（上卦动）'}
+      </div>
+      <div class="hex-arrows">
+        <div class="hex-arrow-box">
+          <div class="hex-arrow-label">上卦</div>
+          <div class="hex-arrow-symbol">${upper.sym}</div>
+          <div class="hex-arrow-name">${upper.name}</div>
+          <div class="hex-arrow-wx" style="color:${wxColor(upper.wx)}">${upper.wx}·${upper.nature}</div>
+        </div>
+        <div class="arrow-between">＋</div>
+        <div class="hex-arrow-box">
+          <div class="hex-arrow-label">下卦</div>
+          <div class="hex-arrow-symbol">${lower.sym}</div>
+          <div class="hex-arrow-name">${lower.name}</div>
+          <div class="hex-arrow-wx" style="color:${wxColor(lower.wx)}">${lower.wx}·${lower.nature}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">体用关系</div>
+      <div class="interp">
+        <div style="display:flex;justify-content:space-around;margin-bottom:14px">
+          <div style="text-align:center">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px">体卦（你）</div>
+            <div style="font-size:24px">${tiGua.sym}</div>
+            <div style="font-weight:600">${tiGua.name}·${tiGua.wx}</div>
+            <div style="font-size:11px;color:var(--text2)">${tiYong.tiPos}</div>
+          </div>
+          <div style="text-align:center;display:flex;align-items:center">
+            <div style="font-size:28px;color:${relation.level.includes('吉')?'var(--green)':'var(--red)'}">${relation.emoji}</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px">用卦（事）</div>
+            <div style="font-size:24px">${yongGua.sym}</div>
+            <div style="font-weight:600">${yongGua.name}·${yongGua.wx}</div>
+            <div style="font-size:11px;color:var(--text2)">${tiYong.yongPos}</div>
+          </div>
+        </div>
+        <span class="tag ${relation.level.includes('吉')?'tag-good':relation.level.includes('凶')?'tag-bad':'tag-info'}">${relation.rel} · ${relation.level}</span>
+        <br><br>
+        <strong>${relation.desc}。</strong>
+        ${getTiYongAdvice(relation.rel, tiGua.wx, yongGua.wx)}
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">互卦 · ${huName}</div>
+      <div class="interp">
+        <span class="tag tag-info">过程卦</span>
+        <br><br>
+        ${huMeaning}。互卦反映事情的内在过程——${getHuInterp(huUpper, huLower)}
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">变卦 · ${bianName}</div>
+      <div class="interp">
+        <span class="tag tag-gold">最终走向</span>
+        <br><br>
+        ${bianMeaning}。
+        <br><br>
+        ${getBianInterp(bianUpper, bianLower, relation, question)}
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">综合断语</div>
+      <div class="interp">
+        ${getMeihuaSummary(mainName, mainMeaning, relation, bianName, bianMeaning, tiGua, yongGua, question)}
+      </div>
+    </div>`;
+
+  document.getElementById('resultContent').innerHTML = html;
+}
+
+function wxColor(wx){
+  const c = {'金':'#c0c0c0','木':'#66bb6a','水':'#4fc3f7','火':'#ef5350','土':'#d4a056'};
+  return c[wx] || '#fff';
+}
+
+function getTiYongAdvice(rel, tiWx, yongWx){
+  const adviceMap = {
+    '用生体':'<br><br>当前时势对你有利，可以主动出击。多接触<span class="hl">' + yongWx + '</span>属性的人和事物，能进一步增强好运。',
+    '比和':'<br><br>双方势均力敌，适合合作共赢。保持平等沟通，不要单方面让步。',
+    '体克用':'<br><br>你有主动权，但需要付出努力才能达成目标。多借助<span class="hl">' + BEI_SHENG[tiWx] + '</span>属性的力量。',
+    '体生用':'<br><br>你在消耗精力和资源。建议适当收缩，不要过度投入。保护好自己的<span class="hl">' + BEI_SHENG[tiWx] + '</span>属性根基。',
+    '用克体':'<br><br>外部环境对你不利，此时不宜硬碰硬。退一步海阔天空，等待时机再出手。'
+  };
+  return adviceMap[rel] || '';
+}
+
+function getHuInterp(huUpper, huLower){
+  const hu = BAGUA[huUpper];
+  const hl = BAGUA[huLower];
+  if(hu.wx === hl.wx) return '过程平稳，内外一致，没有太多波折。';
+  if(SHENG[hl.wx] === hu.wx) return '过程中有贵人暗中相助，事情在推进中逐渐明朗。';
+  if(KE[hu.wx] === hl.wx) return '过程中有阻碍，需要克服内部的矛盾和消耗。';
+  if(KE[hl.wx] === hu.wx) return '过程中外部环境会给你施加压力，需要灵活应对。';
+  return '过程中有起伏变化，保持平常心即可。';
+}
+
+function getBianInterp(bianUpper, bianLower, relation, question){
+  const bu = bianUpper;
+  const bl = bianLower;
+
+  // 变卦的体用（沿用原来的体卦位置）
+  let newTiWx, newYongWx;
+  if(relation.rel === '用生体' || relation.rel === '体生用'){
+    // 如果原来是上卦为体，变卦也看上卦
+    newTiWx = bu.wx; newYongWx = bl.wx;
+  } else {
+    newTiWx = bl.wx; newYongWx = bu.wx;
+  }
+
+  const newRel = getTiYongRelation(newTiWx, newYongWx);
+
+  let text = `变卦体用关系为<strong>${newRel.rel}</strong>——`;
+  if(newRel.level.includes('吉')){
+    text += '<span class="hl">最终走向是好的</span>。事情的结果会让你满意。';
+  } else if(newRel.rel === '比和'){
+    text += '最终结果平稳，不亏不赚，达到基本预期。';
+  } else {
+    text += '<span class="hl">最终结果可能不如预期</span>。需要提前做好心理准备，或者调整策略。';
+  }
+  return text;
+}
+
+function getMeihuaSummary(mainName, mainMeaning, relation, bianName, bianMeaning, tiGua, yongGua, question){
+  let text = '';
+  // 总体判断
+  if(relation.level.includes('大吉')){
+    text += '<span class="tag tag-good">上吉之卦</span> ';
+    text += `此卦<strong>${mainName}</strong>，${mainMeaning}。体用关系为<span class="hl">${relation.rel}</span>，当前时势完全站在你这边。`;
+  } else if(relation.level.includes('吉') && !relation.level.includes('大')){
+    text += '<span class="tag tag-good">中吉之卦</span> ';
+    text += `此卦<strong>${mainName}</strong>，${mainMeaning}。体用关系为<span class="hl">${relation.rel}</span>，事情整体对你有利，但需要付出一定努力。`;
+  } else if(relation.level === '凶'){
+    text += '<span class="tag tag-bad">偏凶之卦</span> ';
+    text += `此卦<strong>${mainName}</strong>，${mainMeaning}。体用关系为<span class="hl">${relation.rel}</span>，当前环境对你不利，建议谨慎行事。`;
+  } else if(relation.level === '大凶'){
+    text += '<span class="tag tag-bad">大凶之卦</span> ';
+    text += `此卦<strong>${mainName}</strong>，${mainMeaning}。体用关系为<span class="hl">${relation.rel}</span>，外部环境严重压制你，此时不宜行动，宜守不宜攻。`;
+  } else {
+    text += '<span class="tag tag-info">平稳之卦</span> ';
+    text += `此卦<strong>${mainName}</strong>，${mainMeaning}。事情不好不坏，需要看你怎么应对。`;
+  }
+
+  // 行动建议
+  text += '<br><br><strong>行动建议：</strong>';
+  if(relation.level.includes('吉')){
+    text += `大胆去做，但保持清醒。多借助<span class="hl">${yongGua.wx}</span>属性的资源和人脉。`;
+  } else {
+    text += `暂缓行动，先积蓄力量。多接触<span class="hl">${BEI_SHENG[tiGua.wx]}</span>属性的人和事物来增强自身能量。`;
+  }
+
+  // 最终走向
+  text += `<br><br><strong>最终走向：</strong>变卦<strong>${bianName}</strong>，${bianMeaning}。`;
+
+  return text;
+}
+</script>
+</body>
+</html>
